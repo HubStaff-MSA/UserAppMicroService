@@ -1,4 +1,4 @@
-package com.roba.security;
+package com.roba.security.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,8 +48,20 @@ public static final String SECRET_KEY="Hqj4ZSrMAhMvjEpAQMQb2FiHqeMNmJi7mvT5xArPV
     }
 public boolean isTokenValid(String token,UserDetails userDetails){
         final String email = extractUsername(token);
-        return (email.equals(userDetails.getUsername()));
+        return (email.equals(userDetails.getUsername())) && !isTokenExpired(token);
 }
+
+
+public boolean isTokenExpired(String token) {
+        
+        return extractExpiration(token).before(new Date());
+}
+
+    private Date extractExpiration(String token) {
+        return extractClaim(token,Claims::getExpiration);
+
+    }
+
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
