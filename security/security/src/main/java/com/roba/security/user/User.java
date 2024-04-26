@@ -1,6 +1,7 @@
 package com.roba.security.user;
 
 
+import com.roba.security.token.Token;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,6 +37,9 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @OneToMany(mappedBy = "user")
+    private List <Token> tokens;
+
     private LocalDate joinDate;
     //foreign key to organization table
     private Integer organizationId;
