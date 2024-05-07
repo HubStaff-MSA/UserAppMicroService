@@ -1,7 +1,7 @@
 package com.roba.security.config;
 
 
-import jakarta.servlet.Filter;
+import com.roba.security.demo.BusinessOwnerController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +13,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+
+
+import static com.roba.security.user.Role.OWNER;
 
 @Configuration
 @EnableWebSecurity
@@ -30,7 +33,8 @@ public class SecurityConfiguration {
             .csrf(csrf -> csrf.disable()) // Disable CSRF protection
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/v1/auth/**").permitAll() // Allow access to public endpoints
+                                .requestMatchers("/api/v1/auth/**").permitAll()// Allow access to public endpoints
+                                .requestMatchers("/api/v1/admin/**").hasAnyRole(OWNER.name())//allow access by biz owner to admin endpoint
                                 .anyRequest().authenticated() // Require authentication for other requests
                 )
                 .sessionManagement(sessionManagement ->

@@ -1,6 +1,8 @@
 package com.roba.security.user;
 
 
+import com.roba.security.Project.Project;
+import com.roba.security.organization.Organization;
 import com.roba.security.token.Token;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,6 +23,7 @@ import java.util.List;
 @Builder
 @Data
 @Table(name="_user")
+@EqualsAndHashCode
 public class User implements UserDetails {
     @Id
     @SequenceGenerator(
@@ -40,13 +43,37 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List <Token> tokens;
 
-    private LocalDate joinDate;
-    //foreign key to organization table
-    private Integer organizationId;
+
+
+    private String Department;
+    private String Position;//Title
+
+
+    @ManyToOne
+    @JoinColumn(name="organization_id")
+    // This specifies the foreign key column name in the User table
+    private Organization organization; // Reference to organization)
+
+
+    @OneToMany
+    private List<Project> projects;
+    private String TimeZone;
+    private LocalDate DateAdded;
+    private LocalDate DateRemoved;
+    private String PayType;//hourly/fixed
+    private Integer BillRate;
+    private Integer WeeklyLimit;
+    private Integer DailyLimit;
+    private boolean TrackingEnabled;
+    private boolean TimesheetsEnabled;
+    private String Status;
+   // private List<Team> teams;
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return role.getAuthorities();
     }
 
     @Override
