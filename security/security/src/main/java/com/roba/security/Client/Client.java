@@ -1,8 +1,8 @@
-package com.roba.security.Project;
+package com.roba.security.Client;
 
-
-
-import com.roba.security.Client.Client;
+import com.roba.security.Project.BudgetBasedOn;
+import com.roba.security.Project.BudgetType;
+import com.roba.security.Project.Project;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,35 +11,37 @@ import lombok.NoArgsConstructor;
 import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.Date;
-//import javax.*;
-
+import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "Project")
-public class Project {
+@Table(name = "Client")
+public class Client {
     @Id
     @SequenceGenerator(
-            name = "project_id_sequence",
-            sequenceName = "project_id_sequence"
+            name = "client_id_sequence",
+            sequenceName = "client_id_sequence"
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "project_id_sequence"
+            generator = "client_id_sequence"
     )
     private Integer id;
-    // @NotNull
-    private String projectName;
-    private boolean disableActivity;
-    private boolean disableIdleTime;
-    //private Integer clientId;
-    @ManyToOne
-    @JoinColumn(name = "client_id", nullable = false)
-    private Client client;
-    //  @NotNull
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String email;
+
+    @NotNull
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    private List<Project> projects;
+    private String phoneNumber;
+    private  String emailAddress;
     //private Budget budget;
     private boolean billable;
     private BudgetType budgetType;
@@ -48,10 +50,5 @@ public class Project {
     private Double budgetNotifyAt;
     private Date budgetStartDate;
     private boolean budgetIncludeNonBillabeTime;
-    // @NotNull
     private Integer organizationId;
-    //members
-    //users
-    //managers
-    //CONSTRAINTS
 }

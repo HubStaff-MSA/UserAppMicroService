@@ -17,11 +17,21 @@ import static com.roba.security.user.Permission.*;
 public enum Role {
     USER(Collections.emptySet()),
 
-    OWNER(Set.of(OWNER_READ,
-            OWNER_UPDATE,
-            OWNER_DELETE,
-            OWNER_CREATE)),
-    BUSINESS_MANAGER(Collections.emptySet()),
+    OWNER(Set.of(PROJECT_READ,
+            PROJECT_UPDATE,
+            PROJECT_DELETE,
+            PROJECT_CREATE,
+            PAYMENT_READ,
+            PAYMENT_UPDATE,
+            PAYMENT_CREATE
+
+
+            )),
+
+    ORGANIZATION_MANAGER(Set.of(PROJECT_READ,
+            PROJECT_UPDATE,
+            PROJECT_DELETE,
+            PROJECT_CREATE)),
     PROJECT_MANAGER(Collections.emptySet());
 
 @Getter
@@ -29,9 +39,9 @@ private final Set<Permission> permissions;
 public List<SimpleGrantedAuthority> getAuthorities(){
     var authorities=getPermissions()
             .stream()
-            .map(permission -> new SimpleGrantedAuthority(permission.name()))
+            .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
             .collect(Collectors.toList());
-    authorities.add(new SimpleGrantedAuthority("ROLE"+this.name()));
+    authorities.add(new SimpleGrantedAuthority("ROLE_"+this.name()));
     return authorities;
     }
 }

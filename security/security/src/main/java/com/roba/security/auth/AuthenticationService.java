@@ -10,7 +10,7 @@ import com.roba.security.token.TokenRepository;
 import com.roba.security.token.TokenType;
 import com.roba.security.user.Role;
 import com.roba.security.user.User;
-import com.roba.security.user.UserRespository;
+import com.roba.security.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,7 +25,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 
 public class AuthenticationService {
-    private final UserRespository repository;
+    private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private  final AuthenticationManager authenticationManager;

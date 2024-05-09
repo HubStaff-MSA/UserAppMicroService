@@ -1,10 +1,10 @@
 package com.roba.security.config;
 
 
-import com.roba.security.demo.BusinessOwnerController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,6 +15,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 
+import static com.roba.security.user.Permission.*;
+import static com.roba.security.user.Role.ORGANIZATION_MANAGER;
 import static com.roba.security.user.Role.OWNER;
 
 @Configuration
@@ -31,10 +33,15 @@ public class SecurityConfiguration {
         http
 
             .csrf(csrf -> csrf.disable()) // Disable CSRF protection
-                .authorizeRequests(authorizeRequests ->
+                .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/api/v1/auth/**").permitAll()// Allow access to public endpoints
-                                .requestMatchers("/api/v1/admin/**").hasAnyRole(OWNER.name())//allow access by biz owner to admin endpoint
+                                .requestMatchers("api/v1/users/**").permitAll()
+                                .requestMatchers("/api/v1/project/**").hasAnyRole(OWNER.name(),ORGANIZATION_MANAGER.name())//allow access by biz owner to admin endpoint
+                                .requestMatchers(HttpMethod.GET,"/api/v1/project/**").hasAnyAuthority(PROJECT_READ.name())
+                                .requestMatchers(HttpMethod.PUT,"/api/v1/project/**").hasAnyAuthority(PROJECT_UPDATE.name())
+                                .requestMatchers(HttpMethod.POST,"/api/v1/project/**").hasAnyAuthority(PROJECT_CREATE.name())
+                                .requestMatchers(HttpMethod.DELETE,"/api/v1/project/**").hasAnyAuthority(PROJECT_DELETE.name())
                                 .anyRequest().authenticated() // Require authentication for other requests
                 )
                 .sessionManagement(sessionManagement ->
