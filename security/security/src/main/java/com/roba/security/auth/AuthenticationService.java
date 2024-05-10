@@ -8,9 +8,7 @@ import com.roba.security.organization.OrganizationRepository;
 import com.roba.security.token.Token;
 import com.roba.security.token.TokenRepository;
 import com.roba.security.token.TokenType;
-import com.roba.security.user.Role;
-import com.roba.security.user.User;
-import com.roba.security.user.UserRepository;
+import com.roba.security.user.*;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -126,4 +125,77 @@ public class AuthenticationService {
         var token = Token.builder().user(user).token(jwtToken).tokenType(TokenType.BEARER).revoked(false).expired(false).build();
         tokenRepository.save(token);
     }
+
+
+
+
+
+
+
+
+
+/////////profile edits
+
+    public String updateUserProfile(Integer userId, UserProfileUpdateRequest request) {
+        User user = repository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+        if (request.getFullName() != null) {
+            user.setFullName(request.getFullName());
+        }
+        if (request.getWorkEmail() != null) {
+            user.setWorkEmail(request.getWorkEmail());
+        }
+
+        repository.save(user);
+
+
+
+        return "";
+
+
+
+
+
+
+    }
+
+    public void changeUserPassword(Integer userId, ChangePasswordRequest request) {
+        User user = repository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+
+
+
+
+        // Check if the current password matches
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+            throw new UnauthorizedException("Current password is incorrect");
+        }
+        // Update password
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+
+        repository.save(user);
+    }
+
+
+
+
+
+
+
+
+
+    //get all users
+    public List<User> getAllUsers() {
+        return repository.findAll();
+    }
+
+    public User getUserById(Integer userId) {
+        return repository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+    }
+    public List<User> getUsersByRole(Role role) {
+        return repository.findByRole(role);
+    }
+
+
 }
