@@ -1,8 +1,9 @@
 package com.roba.security.auth;
 
+import com.roba.security.Project.Project;
 import com.roba.security.config.JwtService;
 
-
+import java.util.Optional;
 import com.roba.security.organization.Organization;
 import com.roba.security.organization.OrganizationRepository;
 import com.roba.security.token.Token;
@@ -27,7 +28,7 @@ public class AuthenticationService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    private  final AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
     private final TokenRepository tokenRepository;
     private final Emailvalidator emailvalidator;
     private final OrganizationRepository organizationRepository;
@@ -40,10 +41,10 @@ public class AuthenticationService {
             throw new IllegalStateException("Email is already in use");
         }
         Role role;
-        if(request.getRole().equals("team_member")) {
+        if (request.getRole().equals("team_member")) {
             role = Role.USER;
-        }else {
-           role = request.getRole();
+        } else {
+            role = request.getRole();
         }
         if (role == Role.OWNER) {
             // Create organization
@@ -66,8 +67,7 @@ public class AuthenticationService {
 
             saveUserToken(savedUser, jwtToken);
             return AuthenticationResponse.builder().token(jwtToken).build();
-        }
-        else if(role == Role.USER){
+        } else if (role == Role.USER) {
             // Fetch organization by name
             Optional<Organization> organizationOptional = organizationRepository.findByName(request.getOrganizationName());
             if (organizationOptional.isEmpty()) {
@@ -87,12 +87,13 @@ public class AuthenticationService {
 
             saveUserToken(savedUser, jwtToken);
             return AuthenticationResponse.builder().token(jwtToken).build();
-        }else{
+        } else {
             throw new IllegalStateException("Role not supported");
 
         }
 
     }
+
     private void revokeAllUserTokens(User user) {
         var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
         if (validUserTokens.isEmpty())
@@ -114,31 +115,42 @@ public class AuthenticationService {
         );
         var user = repository.findByworkEmail(request.getWorkEmail())
                 .orElseThrow();
-        var jwtToken=jwtService.generateToken(user);
+        var jwtToken = jwtService.generateToken(user);
         revokeAllUserTokens(user);
-          saveUserToken(user,jwtToken);
+        saveUserToken(user, jwtToken);
 
         return AuthenticationResponse.builder().token(jwtToken).build();
 
     }
+
     private void saveUserToken(User user, String jwtToken) {
         var token = Token.builder().user(user).token(jwtToken).tokenType(TokenType.BEARER).revoked(false).expired(false).build();
         tokenRepository.save(token);
     }
 
 
-
-
-
-
-
-
-
 /////////profile edits
+
+//    public String updateUserProfile(Integer userId, UserProfileUpdateRequest request) {
+//        User user = repository.findById(userId)
+//                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+//        if (request.getFullName() != null) {
+//            user.setFullName(request.getFullName());
+//        }
+//        if (request.getWorkEmail() != null) {
+//            user.setWorkEmail(request.getWorkEmail());
+//        }
+//
+//        repository.save(user);
+//   return  "";
+//
+
 
     public String updateUserProfile(Integer userId, UserProfileUpdateRequest request) {
         User user = repository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+
+        // Update user profile fields if provided in the request
         if (request.getFullName() != null) {
             user.setFullName(request.getFullName());
         }
@@ -146,18 +158,30 @@ public class AuthenticationService {
             user.setWorkEmail(request.getWorkEmail());
         }
 
-        repository.save(user);
+        // Save the updated user record
+        User savedUser = repository.save(user);
 
+        // Refresh the associated token(s) to prevent expiration
+        refreshUserTokens(savedUser);
 
-
-        return "";
-
-
-
-
-
-
+        return "Profile updated successfully";
     }
+
+    private void refreshUserTokens(User user) {
+        List<Token> userTokens = tokenRepository.findByUser(user);
+        userTokens.forEach(token -> {
+            token.setExpired(false); // Set the token as not expired
+            tokenRepository.save(token); // Save the refreshed token
+        });
+
+
+
+
+
+
+
+
+}
 
     public void changeUserPassword(Integer userId, ChangePasswordRequest request) {
         User user = repository.findById(userId)
@@ -189,9 +213,9 @@ public class AuthenticationService {
         return repository.findAll();
     }
 
-    public User getUserById(Integer userId) {
-        return repository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+    public Optional<User>getUserById(Integer userId) {
+        return repository.findById(userId);
+               // .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
     }
     public List<User> getUsersByRole(Role role) {
         return repository.findByRole(role);

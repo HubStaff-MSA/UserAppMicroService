@@ -1,6 +1,7 @@
 package com.roba.security.token;
 
 
+import com.roba.security.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
@@ -15,4 +16,6 @@ public interface TokenRepository extends JpaRepository<Token, Integer> {
   List<Token> findAllValidTokenByUser(Integer userId);
 
     Optional<Token> findByToken(String token);
+
+    List<Token> findByUser(User user);
 }
