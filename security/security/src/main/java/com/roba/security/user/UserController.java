@@ -3,6 +3,7 @@ package com.roba.security.user;
 import com.roba.security.auth.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
@@ -52,6 +53,7 @@ public class UserController {
 
 
     @GetMapping("/{userId}")
+    @Cacheable(key="#id",value="User")
     public Optional<User> getUserById(@PathVariable Integer userId) {
         Command command = commandFactory.createGetUserByIdCommand(userId);
         command.execute();
@@ -64,6 +66,15 @@ public class UserController {
         command.execute();
         return userService.getUsersByRole(role);
     }
+
+//
+//    @DeleteMapping("/{userId}")
+//    public ResponseEntity<?> deleteUserById(@PathVariable("userId") Integer userId) {
+//        Command command = commandFactory.createDeleteUserCommand(userId);
+//        command.execute();
+//        userService.deleteUserById(userId);
+//        return ResponseEntity.ok().build();
+//    }
 
 
 

@@ -1,6 +1,7 @@
 package com.roba.security.user;
 
 
+import com.roba.security.auth.AuthenticationResponse;
 import com.roba.security.auth.AuthenticationService;
 
 public class ChangePasswordCommand implements Command {
@@ -17,6 +18,11 @@ public class ChangePasswordCommand implements Command {
     @Override
     public void execute() {
         userService.changeUserPassword(userId, request);
+    }
+
+    @Override
+    public AuthenticationResponse getResult() {
+        return null;
     }
 }
 

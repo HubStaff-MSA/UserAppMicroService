@@ -1,5 +1,6 @@
 package com.roba.security.user;
 
+import com.roba.security.auth.AuthenticationResponse;
 import com.roba.security.auth.AuthenticationService;
 
 import java.util.Optional;
@@ -16,5 +17,10 @@ public class GetUserByIdCommand implements Command {
     @Override
     public void execute() {
          userService.getUserById(userId);
+    }
+
+    @Override
+    public AuthenticationResponse getResult() {
+        return null;
     }
 }

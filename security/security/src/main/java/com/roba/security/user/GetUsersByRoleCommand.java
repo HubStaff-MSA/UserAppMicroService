@@ -1,5 +1,6 @@
 package com.roba.security.user;
 
+import com.roba.security.auth.AuthenticationResponse;
 import com.roba.security.auth.AuthenticationService;
 
 import java.util.List;
@@ -18,5 +19,10 @@ public class GetUsersByRoleCommand implements Command {
     @Override
     public void execute() {
          userService.getUsersByRole(role);
+    }
+
+    @Override
+    public AuthenticationResponse getResult() {
+        return null;
     }
 }

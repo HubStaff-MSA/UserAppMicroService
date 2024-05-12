@@ -1,5 +1,6 @@
 package com.roba.security.user;
 
+import com.roba.security.auth.AuthenticationResponse;
 import com.roba.security.auth.AuthenticationService;
 
 public class UpdateProfileCommand implements Command{
@@ -17,5 +18,10 @@ public class UpdateProfileCommand implements Command{
     @Override
     public void execute() {
         userService.updateUserProfile(userId, request);
+    }
+
+    @Override
+    public AuthenticationResponse getResult() {
+        return null;
     }
 }

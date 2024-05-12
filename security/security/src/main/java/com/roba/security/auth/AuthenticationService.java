@@ -12,6 +12,7 @@ import com.roba.security.token.TokenType;
 import com.roba.security.user.*;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,6 +34,7 @@ public class AuthenticationService {
     private final Emailvalidator emailvalidator;
     private final OrganizationRepository organizationRepository;
 
+   // @Cacheable(key="#id",value="User")
     public AuthenticationResponse register(RegisterRequest request) {
         //boolean isValidEmail =emailvalidator.test(request.getWorkEmail());
         //if(!isValidEmail) {throw new IllegalStateException("Invalid email");}
@@ -86,6 +88,7 @@ public class AuthenticationService {
             var jwtToken = jwtService.generateToken(user);
 
             saveUserToken(savedUser, jwtToken);
+
             return AuthenticationResponse.builder().token(jwtToken).build();
         } else {
             throw new IllegalStateException("Role not supported");

@@ -1,6 +1,8 @@
 package com.roba.security.user;
 
+import com.roba.security.auth.AuthenticationRequest;
 import com.roba.security.auth.AuthenticationService;
+import com.roba.security.auth.RegisterRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -30,6 +32,13 @@ public class CommandFactory {
         public Command createGetUsersByRoleCommand(Role role) {
             return new GetUsersByRoleCommand(role, userService);
         }
+    public Command createRegisterCommand(RegisterRequest request) {
+        return new RegisterCommand(userService, request);
+    }
+
+    public Command createAuthenticateCommand(AuthenticationRequest request) {
+        return new AuthenticateCommand(userService, request);
+    }
 
 
 
