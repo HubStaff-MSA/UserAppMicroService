@@ -8,6 +8,7 @@ import com.roba.security.organization.Organization;
 import com.roba.security.organization.OrganizationRepository;
 import com.roba.security.token.Token;
 import com.roba.security.token.TokenRepository;
+import com.roba.security.token.TokenService;
 import com.roba.security.token.TokenType;
 import com.roba.security.user.*;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final TokenRepository tokenRepository;
+    private final TokenService tokenService;
     private final Emailvalidator emailvalidator;
     private final OrganizationRepository organizationRepository;
 
@@ -129,6 +131,7 @@ public class AuthenticationService {
     private void saveUserToken(User user, String jwtToken) {
         var token = Token.builder().user(user).token(jwtToken).tokenType(TokenType.BEARER).revoked(false).expired(false).build();
         tokenRepository.save(token);
+        tokenService.saveToken(token);
     }
 
 
@@ -175,6 +178,7 @@ public class AuthenticationService {
         userTokens.forEach(token -> {
             token.setExpired(false); // Set the token as not expired
             tokenRepository.save(token); // Save the refreshed token
+            tokenService.saveToken(token);
         });
 
 
