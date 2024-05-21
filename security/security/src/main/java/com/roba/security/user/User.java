@@ -76,7 +76,7 @@ public class User implements UserDetails, Serializable {
 
     private LocalDate DateRemoved;
     private String PayType;//hourly/fixed
-    private Integer BillRate;
+    private Integer PayRate;
 
     private Integer DailyLimit;
     private boolean TrackingEnabled;

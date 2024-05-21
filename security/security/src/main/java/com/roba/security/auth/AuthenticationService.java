@@ -8,10 +8,12 @@ import com.roba.security.organization.Organization;
 import com.roba.security.organization.OrganizationRepository;
 import com.roba.security.token.Token;
 import com.roba.security.token.TokenRepository;
+import com.roba.security.token.TokenService;
 import com.roba.security.token.TokenType;
 import com.roba.security.user.*;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,8 +35,10 @@ public class AuthenticationService {
     private final TokenRepository tokenRepository;
     private final Emailvalidator emailvalidator;
     private final OrganizationRepository organizationRepository;
+    private final TokenService tokenService;
+   // private final UserService userService;
 
-   // @Cacheable(key="#id",value="User")
+    // @CachePut(value = "user", key = "#result.id")
     public AuthenticationResponse register(RegisterRequest request) {
         //boolean isValidEmail =emailvalidator.test(request.getWorkEmail());
         //if(!isValidEmail) {throw new IllegalStateException("Invalid email");}
@@ -108,7 +112,7 @@ public class AuthenticationService {
         tokenRepository.saveAll(validUserTokens);
     }
 
-
+   // @CachePut(value = "userCache", key = "#user.id")
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -121,14 +125,30 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
+       // userService.saveUser(user);
+
+
+
+
+
+
+
 
         return AuthenticationResponse.builder().token(jwtToken).build();
 
     }
 
+  //  @Cacheable(value = "userCache", key = "#userId")
+    public User getuserById(Integer userId) {
+        return repository.findById(userId)
+                .orElseThrow(() -> new IllegalStateException("User not found with id: " + userId));
+    }
+
+
     private void saveUserToken(User user, String jwtToken) {
         var token = Token.builder().user(user).token(jwtToken).tokenType(TokenType.BEARER).revoked(false).expired(false).build();
         tokenRepository.save(token);
+        tokenService.saveToken(token);
     }
 
 
@@ -186,6 +206,7 @@ public class AuthenticationService {
 
 }
 
+
     public void changeUserPassword(Integer userId, ChangePasswordRequest request) {
         User user = repository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
@@ -211,6 +232,7 @@ public class AuthenticationService {
 
 
 
+
     //get all users
     public List<User> getAllUsers() {
         return repository.findAll();
@@ -223,6 +245,7 @@ public class AuthenticationService {
     public List<User> getUsersByRole(Role role) {
         return repository.findByRole(role);
     }
+
 
 
 }

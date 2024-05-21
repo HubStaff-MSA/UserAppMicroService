@@ -2,8 +2,7 @@ package com.roba.security.user;
 
 import com.roba.security.auth.AuthenticationResponse;
 import com.roba.security.auth.AuthenticationService;
-
-import java.util.List;
+import com.roba.security.user.Commands.Command;
 
 public class GetAllUsersCommand implements Command {
     private final AuthenticationService userService;
@@ -21,4 +20,10 @@ public class GetAllUsersCommand implements Command {
     public AuthenticationResponse getResult() {
         return null;
     }
+
+//    public void build(String payload) {
+//        this.organizationID = Integer.parseInt(payload.split(",")[0]);
+//        this.userID = Integer.parseInt(payload.split(",")[1]);
+//
+//    }
 }

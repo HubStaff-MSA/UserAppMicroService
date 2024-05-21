@@ -1,14 +1,16 @@
 package com.roba.security.user;
 
 import com.roba.security.auth.AuthenticationService;
+import com.roba.security.user.Commands.Command;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 import java.util.List;
- import com.roba.security.user.CommandFactory;
+
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -25,9 +27,52 @@ public class UserController {
 //        return ResponseEntity.ok().build();
 //    }
 
-    public ResponseEntity<?> updateProfile(@PathVariable("userId") Integer userId, @RequestBody UserProfileUpdateRequest request) {
+    public ResponseEntity<Object> updateProfile(@PathVariable("userId") Integer userId, @RequestBody UserProfileUpdateRequest request) throws NoSuchFieldException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         Command command = commandFactory.createUpdateProfileCommand(userId, request);
         command.execute();
+//
+//        Field cmdMapField = CommandsMap.class.getDeclaredField("cmdMap");
+//
+//        // Make the field accessible
+//        cmdMapField.setAccessible(true);
+//        // Get the cmdMap value
+//        Object cmdMapValue = cmdMapField.get(null);
+//        // Assuming cmdMapValue is a Map<String, Class<?>>
+//        ConcurrentHashMap<String, Class<?>> cmdMap = (ConcurrentHashMap<String, Class<?>>) cmdMapValue;
+//
+//        Class<?> commandClass = (Class<?>) cmdMap.get(request.getCommand());
+//
+//        Object commandInstance = commandClass.newInstance();
+//
+////         Get the build method of the command class
+//        Method buildMethod = commandClass.getDeclaredMethod("build", String.class);
+//
+//        // Invoke the build method
+//        buildMethod.invoke(commandInstance, request.getPayload());
+//
+//        // Get the execute method of the command class
+//        Method executeMethod = commandClass.getDeclaredMethod("execute",Integer.class);
+//
+//        // Invoke the execute method
+//        executeMethod.invoke(commandInstance,userId);
+//
+//        // Get the returned field of the command class
+//        Field returnedField = commandClass.getDeclaredField("returned");
+//
+//        // Make the field accessible
+//        returnedField.setAccessible(true);
+//
+//        // Get the value of the returned field from the command instance
+//        String returnedValue = (String) returnedField.get(commandInstance);
+//
+//        // Cast the returned value to TrackTime
+//        return returnedValue;
+
+
+
+
+
+
         return ResponseEntity.ok().build();
     }
 
@@ -37,10 +82,46 @@ public class UserController {
 //        userService.changeUserPassword(userId, request);
 //        return ResponseEntity.ok().build();
 //    }
-    public ResponseEntity<?> changePassword(@PathVariable("userId") Integer userId, @RequestBody ChangePasswordRequest request) {
+    public ResponseEntity<Object> changePassword(@PathVariable("userId") Integer userId, @RequestBody ChangePasswordRequest request) throws NoSuchFieldException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         Command command = commandFactory.createChangePasswordCommand(userId, request);
         command.execute();
         return ResponseEntity.ok().build();
+//        Field cmdMapField = CommandsMap.class.getDeclaredField("cmdMap");
+//
+//        // Make the field accessible
+//        cmdMapField.setAccessible(true);
+//        // Get the cmdMap value
+//        Object cmdMapValue = cmdMapField.get(null);
+//        // Assuming cmdMapValue is a Map<String, Class<?>>
+//        ConcurrentHashMap<String, Class<?>> cmdMap = (ConcurrentHashMap<String, Class<?>>) cmdMapValue;
+//
+//        Class<?> commandClass = (Class<?>) cmdMap.get(request.getCommand());
+//
+//        Object commandInstance = commandClass.newInstance();
+//
+////         Get the build method of the command class
+//        Method buildMethod = commandClass.getDeclaredMethod("build", String.class);
+//
+//        // Invoke the build method
+//        buildMethod.invoke(commandInstance, request.getPayload());
+//
+//        // Get the execute method of the command class
+//        Method executeMethod = commandClass.getDeclaredMethod("execute", null);
+//
+//        // Invoke the execute method
+//        executeMethod.invoke(commandInstance);
+//
+//        // Get the returned field of the command class
+//        Field returnedField = commandClass.getDeclaredField("returned");
+//
+//        // Make the field accessible
+//        returnedField.setAccessible(true);
+//
+//        // Get the value of the returned field from the command instance
+//        String returnedValue = (String) returnedField.get(commandInstance);
+//
+//        // Cast the returned value to TrackTime
+//        return returnedValue;
     }
 
 
@@ -52,12 +133,21 @@ public class UserController {
     }
 
 
+//    @GetMapping("/{userId}")
+//    //@Cacheable(key="#id",value="User")
+//    public Optional<User> getUserById(@PathVariable Integer userId) {
+//        Command command = commandFactory.createGetUserByIdCommand(userId);
+//        command.execute();
+//        return userService.getUserById(userId);
+//    }
+
+
+
     @GetMapping("/{userId}")
-    @Cacheable(key="#id",value="User")
-    public Optional<User> getUserById(@PathVariable Integer userId) {
-        Command command = commandFactory.createGetUserByIdCommand(userId);
-        command.execute();
-        return userService.getUserById(userId);
+    public ResponseEntity<User> getUserById(@PathVariable Integer userId) {
+        User user = userService.getuserById(userId);
+
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/role/{role}")

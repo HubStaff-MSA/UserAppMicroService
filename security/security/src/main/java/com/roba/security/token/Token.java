@@ -4,12 +4,14 @@ import com.roba.security.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class Token {
+public class Token implements Serializable {
 
     @Id
     @GeneratedValue

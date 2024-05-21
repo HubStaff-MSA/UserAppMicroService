@@ -1,8 +1,12 @@
-package com.roba.security.user;
+package com.roba.security.user.Commands;
 
 import com.roba.security.auth.AuthenticationResponse;
 import com.roba.security.auth.AuthenticationService;
-
+import com.roba.security.user.UserProfileUpdateRequest;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 public class UpdateProfileCommand implements Command{
     private final AuthenticationService userService;
     private final Integer userId;

@@ -23,5 +23,22 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
+cache:
+  type: redis
+  redis:
+    host: redis-12006.c62.us-east-1-4.ec2.redns.redis-cloud.com
+    port: 12006
+    password: oSrE2KvyJdxFJ8vmpDlIBDtQ9ZriadjR
+    database: 0
+    timeout: 60000 # Optional: Timeout in milliseconds for connection (60 seconds)
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
 
-
+  rabbitmq:
+    addresses: localhost:5672
+    username: guest
+    password: guest

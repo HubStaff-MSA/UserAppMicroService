@@ -3,10 +3,8 @@ package com.roba.security.user;
 import com.roba.security.auth.AuthenticationRequest;
 import com.roba.security.auth.AuthenticationService;
 import com.roba.security.auth.RegisterRequest;
+import com.roba.security.user.Commands.*;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.Optional;
 
 @Component
 public class CommandFactory {
@@ -19,7 +17,6 @@ public class CommandFactory {
     public Command createUpdateProfileCommand(Integer userId, UserProfileUpdateRequest request) {
         return new UpdateProfileCommand(userService, userId, request);
     }
-
     public Command createChangePasswordCommand(Integer userId, ChangePasswordRequest request) {
         return new ChangePasswordCommand(userService, userId, request);
     }

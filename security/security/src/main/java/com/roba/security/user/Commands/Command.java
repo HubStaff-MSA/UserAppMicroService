@@ -1,4 +1,4 @@
-package com.roba.security.user;
+package com.roba.security.user.Commands;
 
 import com.roba.security.auth.AuthenticationResponse;
 

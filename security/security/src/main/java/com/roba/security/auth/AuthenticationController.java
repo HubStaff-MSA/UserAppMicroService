@@ -1,11 +1,9 @@
 package com.roba.security.auth;
 
-import com.roba.security.user.Command;
+import com.roba.security.user.Commands.Command;
 import com.roba.security.user.CommandFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
