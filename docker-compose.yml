@@ -44,7 +44,6 @@ services:
 #      - spring
   rabbitmq:
     image: 'rabbitmq:3.6-management-alpine'
-    container_name: rabbitmq
     ports:
       # The standard AMQP protocol port
       - '5672:5672'
@@ -60,9 +59,9 @@ services:
       RABBITMQ_DEFAULT_PASS: "guest"
     networks:
       - spring
-  networks:
-      spring:
-        driver: bridge
+#  networks:
+#      spring:
+#        driver: bridge
 
 #  eureka-server:
 #    image: amigoscode/eureka-server:latest

@@ -37,7 +37,7 @@ public class RabbitMQConfig {
     }
     //add bean annotation before every new queue
     @Bean
-    public Queue trackTimeQueue() {
+    public Queue reports() {
         return new Queue("reports", false);
     }
 

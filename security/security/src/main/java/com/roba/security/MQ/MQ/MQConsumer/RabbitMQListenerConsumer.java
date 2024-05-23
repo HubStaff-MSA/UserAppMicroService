@@ -39,8 +39,8 @@ public class RabbitMQListenerConsumer {
         // Cast the returned value to TrackTime
         if (returnedValue != null) {
             //// was tracktime queue
-            rabbitTemplate.convertAndSend("userResponseQueue", returnedValue);
-            System.out.println("Published returned value to tracktime queue.");
+            rabbitTemplate.convertAndSend("reports", returnedValue);
+            System.out.println("Published returned value to reports queue.");
         }
     }
 

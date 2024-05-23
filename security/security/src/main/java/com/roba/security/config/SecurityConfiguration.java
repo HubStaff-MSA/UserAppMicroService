@@ -37,6 +37,7 @@ public class SecurityConfiguration {
                         authorizeRequests
                                 .requestMatchers("/api/v1/auth/**").permitAll()// Allow access to public endpoints
                                 .requestMatchers("api/users/**").permitAll()
+                                .requestMatchers("api/sendCommand").permitAll()
                                 .requestMatchers("/api/v1/project/**").hasAnyRole(OWNER.name(),ORGANIZATION_MANAGER.name())//allow access by biz owner to admin endpoint
                                 .requestMatchers(HttpMethod.GET,"/api/v1/project/**").hasAnyAuthority(PROJECT_READ.name())
                                 .requestMatchers(HttpMethod.PUT,"/api/v1/project/**").hasAnyAuthority(PROJECT_UPDATE.name())

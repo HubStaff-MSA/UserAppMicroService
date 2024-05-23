@@ -19,6 +19,10 @@ public class getUserCommand implements Command{
         private  Integer userId;
     private UserDTO returned;
 
+    public getUserCommand(AuthenticationService authenticationService) {
+        this.userService = authenticationService;
+    }
+
 
         @Override
         public void execute() {
@@ -34,8 +38,8 @@ public class getUserCommand implements Command{
             return null;
         }
 
-        public void build(String payload) {
-             this.userId = Integer.parseInt(payload.split(",")[0]);
+        public void build(Object payload) {
+             this.userId = Integer.parseInt(payload.toString());
 
 
         }
