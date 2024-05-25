@@ -29,7 +29,7 @@ public class RabbitMQListenerConsumer {
     }
 
     @RabbitListener(queues = "commandQueue")
-    public void receiveMessage(CommandSender commandSender) throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
+    public Object receiveMessage(CommandSender commandSender) throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
         System.out.println("Received command: " + commandSender.getCommand());
         System.out.println("Received payload: " + commandSender.getPayload());
 
@@ -39,9 +39,11 @@ public class RabbitMQListenerConsumer {
         // Cast the returned value to TrackTime
         if (returnedValue != null) {
             //// was tracktime queue
+           // rabbitTemplate.convertAndSend("reports", returnedValue);
             rabbitTemplate.convertAndSend("reports", returnedValue);
             System.out.println("Published returned value to reports queue.");
         }
+        return returnedValue;
     }
 
     public Object callCmdMap(String Command , Object Payload) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException, NoSuchFieldException {

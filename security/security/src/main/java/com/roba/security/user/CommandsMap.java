@@ -27,6 +27,7 @@ public class CommandsMap {
         cmdMap.put("Register" ,RegisterCommand.class);
         cmdMap.put("Authenticate" , AuthenticateCommand.class);
         cmdMap.put("GetUser", getUserCommand.class);
+        cmdMap.put("GetUsersPayrates", UsersPayRates.class);
     }
 
 
@@ -43,7 +44,7 @@ public class CommandsMap {
 
     public static ConcurrentMap<String,Class<?>> delete(String cmd) {
         cmdMap.remove(cmd);
-        Path path = Paths.get("tracktime/src/main/java/com/hubstaffmicroservices/tracktime/Commands/"+ cmd + ".java");
+        Path path = Paths.get("security/security/src/main/java/com/roba/security/user/Commands/"+ cmd + ".java");
         try {
             boolean deleted = Files.deleteIfExists(path);
             if (deleted) {
@@ -59,7 +60,7 @@ public class CommandsMap {
     }
 
     public static ConcurrentMap<String,Class<?>> add(String cmd) throws IOException {
-        String ClassName = "com.hubstaffmicroservices.tracktime.Commands." + cmd;
+        String ClassName = "com.roba.security.user.Commands." + cmd;
         byte[] bytes = Files.readAllBytes(Paths.get("tracktime/target/classes/com/hubstaffmicroservices/tracktime/Commands/"+cmd + ".class"));
         MyClassLoader loader = new MyClassLoader();
         Class<?> newCommand = loader.loadClass(bytes, ClassName);
@@ -75,7 +76,7 @@ public class CommandsMap {
 
     public static void update(String cmd) {
         String javaFilePath = "tracktime/src/main/java/com/hubstaffmicroservices/tracktime/Commands/"+cmd+".java"; // Path to your .java file
-        String targetDir = "tracktime/target/classes/com/hubstaffmicroservices/tracktime/Commands";
+        String targetDir = "security/security/target/classes/com/roba/security/user/Commands";
 
         // Compile the java file
         compileJavaFile(javaFilePath, targetDir);

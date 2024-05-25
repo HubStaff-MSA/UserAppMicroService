@@ -2,6 +2,7 @@ package com.roba.security.token;
 
 
 
+import com.roba.security.user.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
@@ -22,11 +23,21 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate<String, Token> redisTemplate() {
+    public RedisTemplate<String, Token> redisTemplateToken() {
         RedisTemplate<String, Token> template = new RedisTemplate<>();
         template.setConnectionFactory(jedisConnectionFactory());
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         return template;
+
     }
+    @Bean
+    public RedisTemplate<String, User> redisTemplate() {
+        RedisTemplate<String, User> template = new RedisTemplate<>();
+        template.setConnectionFactory(jedisConnectionFactory());
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        return template;
+    }
+
 }

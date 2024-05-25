@@ -43,7 +43,7 @@ public class User implements UserDetails, Serializable {
     @Enumerated(EnumType.STRING)
     private Role role;
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
+   // @JsonIgnore
     private List <Token> tokens;
 
 

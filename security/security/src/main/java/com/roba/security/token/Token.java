@@ -1,5 +1,6 @@
 package com.roba.security.token;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.roba.security.user.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,6 +25,7 @@ public class Token implements Serializable {
 
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="user_id")
     private User user;
 

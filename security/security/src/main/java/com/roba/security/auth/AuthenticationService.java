@@ -1,6 +1,6 @@
 package com.roba.security.auth;
 
-import com.roba.security.Project.Project;
+import com.roba.security.UserCache.UserService;
 import com.roba.security.config.JwtService;
 
 import java.util.Optional;
@@ -13,8 +13,6 @@ import com.roba.security.token.TokenType;
 import com.roba.security.user.*;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +33,7 @@ public class AuthenticationService {
     private final Emailvalidator emailvalidator;
     private final OrganizationRepository organizationRepository;
     private final TokenService tokenService;
-   // private final UserService userService;
+    private final UserService userService;
 
     // @CachePut(value = "user", key = "#result.id")
     public AuthenticationResponse register(RegisterRequest request) {
@@ -67,6 +64,25 @@ public class AuthenticationService {
                     .password(passwordEncoder.encode(request.getPassword()))
                     .role(request.getRole())
                     .organization(savedOrganization)
+                    .Department(request.getDepartment())
+                    .Position(request.getPosition())
+                    .TimeZone(request.getTimeZone())
+                    .hireDate(request.getHireDate())
+                    .hourlyRate(request.getHourlyRate())
+                    .salary(request.getSalary())
+                    .taxInfo(request.getTaxInfo())
+                    .usedTimeOff(request.getUsedTimeOff())
+                    .pendingTimeOff(request.getPendingTimeOff())
+                    .balanceTimeOff(request.getBalanceTimeOff())
+                    .totalHoursWorked(request.getTotalHoursWorked())
+                    .WeeklyLimit(request.getWeeklyLimit())
+                    .DateRemoved(request.getDateRemoved())
+                    .PayType(request.getPayType())
+                    .PayRate(request.getPayRate())
+                    .DailyLimit(request.getDailyLimit())
+                    .TrackingEnabled(request.isTrackingEnabled())
+                    .TimesheetsEnabled(request.isTimesheetsEnabled())
+                    .Status(request.getStatus())
                     .build();
             var savedUser = repository.save(user);
             var jwtToken = jwtService.generateToken(user);
@@ -125,7 +141,7 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
-       // userService.saveUser(user);
+        userService.saveUser(user);
 
 
 
@@ -246,6 +262,9 @@ public class AuthenticationService {
         return repository.findByRole(role);
     }
 
-
+      public User GetUserFromCache(){
+         User cachedUser = userService.getUser(1);
+         return cachedUser;
+      }
 
 }

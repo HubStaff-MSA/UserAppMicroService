@@ -40,7 +40,10 @@ public class RabbitMQConfig {
     public Queue reports() {
         return new Queue("reports", false);
     }
-
+    @Bean
+    public Queue finance() {
+        return new Queue("finance", false);
+    }
     @Bean
     public Jackson2JsonMessageConverter messageConverter() {
         Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
