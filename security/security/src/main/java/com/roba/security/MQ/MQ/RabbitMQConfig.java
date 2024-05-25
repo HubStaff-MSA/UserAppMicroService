@@ -45,6 +45,10 @@ public class RabbitMQConfig {
         return new Queue("U_F_Queue", false);
     }
     @Bean
+    public Queue webserverQueue() {
+        return new Queue("webserverQueue", false);
+    }
+    @Bean
     public Jackson2JsonMessageConverter messageConverter() {
         Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
         DefaultJackson2JavaTypeMapper typeMapper = new DefaultJackson2JavaTypeMapper();

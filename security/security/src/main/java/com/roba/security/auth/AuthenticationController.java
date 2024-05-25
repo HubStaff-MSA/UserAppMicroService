@@ -61,7 +61,7 @@ public class AuthenticationController {
     @PostMapping("/project")
     public Object ReceivedCommand( @RequestBody CommandSender commandSender) {
 
-        return rabbitTemplate.convertSendAndReceive("commandQueueUser", commandSender);
+        return rabbitTemplate.convertSendAndReceive("webserverQueue", commandSender);
 
 
     }
