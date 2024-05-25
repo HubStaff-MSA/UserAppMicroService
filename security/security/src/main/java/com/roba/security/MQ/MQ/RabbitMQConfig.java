@@ -32,17 +32,17 @@ public class RabbitMQConfig {
 
     @Bean
     //the commandqueue is the queue i listen to
-    public Queue commandQueue() {
-        return new Queue("commandQueue", false);
+    public Queue commandQueueUser() {
+        return new Queue("commandQueueUser", false);
     }
     //add bean annotation before every new queue
     @Bean
-    public Queue reports() {
-        return new Queue("reports", false);
+    public Queue U_R_Queue() {
+        return new Queue("U_R_Queue", false);
     }
     @Bean
-    public Queue finance() {
-        return new Queue("finance", false);
+    public Queue U_F_Queue() {
+        return new Queue("U_F_Queue", false);
     }
     @Bean
     public Jackson2JsonMessageConverter messageConverter() {

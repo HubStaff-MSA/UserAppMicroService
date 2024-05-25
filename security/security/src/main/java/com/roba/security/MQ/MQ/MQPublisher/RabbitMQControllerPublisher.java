@@ -24,7 +24,7 @@ public class RabbitMQControllerPublisher {
     @PostMapping("/sendCommand")
     public String sendCommand(@RequestBody CommandSender commandSender) {
         try {
-            rabbitMQService.sendMessage("commandQueue", commandSender);
+            rabbitMQService.sendMessage("commandQueueUser", commandSender);
             return "Message sent to commandQueue: " + commandSender;
         } catch (Exception e) {
             return "Failed to send message: " + e.getMessage();

@@ -6,18 +6,18 @@ public class CommandSender implements Serializable {
 
     private String command;
     private Object payload;
-   // private Object publishQueue;
-    private String requestQueue;
 
+    private String requestingQueue;
+    // private Object publishQueue;
     // Default constructor
     public CommandSender() {}
 
     // Parameterized constructor
-    public CommandSender(String command, Object payload, String requestQueue) {
+    public CommandSender(String command, Object payload, String requestingQueue) {
         this.command = command;
         this.payload = payload;
       //  this.publishQueue = publishQueue;
-        this.requestQueue=requestQueue;
+        this.requestingQueue = requestingQueue;
 
     }
 
@@ -33,14 +33,20 @@ public class CommandSender implements Serializable {
     public Object getPayload() {
         return payload;
     }
-//    public Object getPublishQueue() {
-//        return publishQueue;
-//    }
-    public String getRequestingQueue() {
-        return requestQueue;
-    }
+
+
 
     public void setPayload(Object payload) {
         this.payload = payload;
     }
+
+
+    public String getRequestingQueue() {
+        return requestingQueue;
+    }
+
+    public void setRequestingQueue(String requestingQueue) {
+        this.requestingQueue = requestingQueue;
+    }
 }
+
