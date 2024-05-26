@@ -39,10 +39,10 @@ public class SecurityConfiguration {
                                 .requestMatchers("api/users/**").permitAll()
                                 .requestMatchers("api/v2/control/**").permitAll()
                                 .requestMatchers("api/sendCommand").permitAll()
-                                .requestMatchers("/api/v1/project/**").hasAnyRole(OWNER.name(),ORGANIZATION_MANAGER.name())//allow access by biz owner to admin endpoint
+                                .requestMatchers("/api/v1/auth/project/**").hasAnyRole(OWNER.name(),ORGANIZATION_MANAGER.name())//allow access by biz owner to admin endpoint
                                 .requestMatchers(HttpMethod.GET,"/api/v1/project/**").hasAnyAuthority(PROJECT_READ.name())
                                 .requestMatchers(HttpMethod.PUT,"/api/v1/project/**").hasAnyAuthority(PROJECT_UPDATE.name())
-                                .requestMatchers(HttpMethod.POST,"/api/v1/project/**").hasAnyAuthority(PROJECT_CREATE.name())
+                                .requestMatchers(HttpMethod.POST,"/api/v1/auth/project/**").hasAnyAuthority(PROJECT_CREATE.name())
                                 .requestMatchers(HttpMethod.DELETE,"/api/v1/project/**").hasAnyAuthority(PROJECT_DELETE.name())
 
                                 .requestMatchers("/api/v1/auth/payment/**").hasAnyRole(OWNER.name())

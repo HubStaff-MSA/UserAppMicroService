@@ -49,22 +49,22 @@ public class RabbitMQListenerConsumer {
 
 
 /////////////////////////////////////////////////
-    @RabbitListener(queues = "webserverQueue")
-    public Object receiveMessagefromwebserver(CommandSender commandSender) throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
-        System.out.println("Received command: " + commandSender.getCommand());
-        System.out.println("Received payload: " + commandSender.getPayload());
-        System.out.println("Requesting queue: " + commandSender.getRequestingQueue());
-        Object returnedValue = callCmdMap(commandSender.getCommand() , commandSender.getPayload());
-
-        System.out.println(returnedValue.toString());
+//    @RabbitListener(queues = "WebServerCommandQueueTimeTracking")
+//    public Object receiveMessagefromwebserver(CommandSender commandSender) throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
+//        System.out.println("Received command: " + commandSender.getCommand());
+//        System.out.println("Received payload: " + commandSender.getPayload());
+//        System.out.println("Requesting queue: " + commandSender.getRequestingQueue());
+//        Object returnedValue = callCmdMap(commandSender.getCommand() , commandSender.getPayload());
+//
+//        System.out.println(returnedValue.toString());
         // Cast the returned value to TrackTime
-        if (returnedValue != null) {
-
-            rabbitTemplate.convertAndSend(commandSender.getRequestingQueue(), returnedValue);
-            System.out.println("Published returned value to "+ commandSender.getRequestingQueue()+" queue.");
-        }
-         return returnedValue;
-    }
+//        if (returnedValue != null) {
+//
+//            rabbitTemplate.convertAndSend(commandSender.getRequestingQueue(), returnedValue);
+//            System.out.println("Published returned value to "+ commandSender.getRequestingQueue()+" queue.");
+//        }
+//         return returnedValue;
+//    }
 
     public Object callCmdMap(String Command , Object Payload) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException, NoSuchFieldException {
         Field cmdMapField = CommandsMap.class.getDeclaredField("cmdMap");
