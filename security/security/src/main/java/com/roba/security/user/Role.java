@@ -15,7 +15,7 @@ import static com.roba.security.user.Permission.*;
 @RequiredArgsConstructor
 
 public enum Role {
-    USER(Collections.emptySet()),
+    USER(Set.of(PROJECT_READ,TIMESHEET_CREATE)),
 
     OWNER(Set.of(PROJECT_READ,
             PROJECT_UPDATE,
@@ -23,7 +23,8 @@ public enum Role {
             PROJECT_CREATE,
             PAYMENT_READ,
             PAYMENT_UPDATE,
-            PAYMENT_CREATE
+            PAYMENT_CREATE,
+            TIMESHEET_CREATE
 
 
             )),
@@ -31,7 +32,7 @@ public enum Role {
     ORGANIZATION_MANAGER(Set.of(PROJECT_READ,
             PROJECT_UPDATE,
             PROJECT_DELETE,
-            PROJECT_CREATE)),
+            PROJECT_CREATE, TIMESHEET_CREATE)),
     PROJECT_MANAGER(Collections.emptySet());
 
 @Getter

@@ -45,9 +45,25 @@ public class RabbitMQConfig {
         return new Queue("U_F_Queue", false);
     }
     @Bean
-    public Queue webserverQueue() {
-        return new Queue("webserverQueue", false);
+    public Queue WebServerCommandQueueTimeTracking() {
+        return new Queue("WebServerCommandQueueTimeTracking", false);
     }
+    @Bean
+    public Queue webServerCommandQueueProjects() { return new Queue("webServerCommandQueueProjects", false);
+    }
+    @Bean
+    public Queue commandQueueReports() { return new Queue("commandQueueReports", false);
+    }
+    @Bean
+    public Queue WebServerQueueFinance() { return new Queue("WebServerQueueFinance", false);
+    }
+    @Bean
+    public Queue WebServerUserQueue() { return new Queue("WebServerUserQueue", false);
+    }
+
+
+
+
     @Bean
     public Jackson2JsonMessageConverter messageConverter() {
         Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();

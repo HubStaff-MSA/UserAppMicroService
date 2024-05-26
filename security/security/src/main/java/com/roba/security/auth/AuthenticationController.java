@@ -58,10 +58,33 @@ public class AuthenticationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/project")
+    @PostMapping("/timetrack")
     public Object ReceivedCommand( @RequestBody CommandSender commandSender) {
 
-        return rabbitTemplate.convertSendAndReceive("webserverQueue", commandSender);
+        return rabbitTemplate.convertSendAndReceive("WebServerCommandQueueTimeTracking", commandSender);
+
+
+    }
+    @PostMapping("/project/createproject")
+    public Object ReceivedCommandprojects( @RequestBody CommandSender commandSender) {
+
+        return rabbitTemplate.convertSendAndReceive("webServerCommandQueueProjects", commandSender);
+
+
+    }
+
+    @PostMapping("/project/getprojectsbyuserid")
+    public Object ReceivedCommandprojects2( @RequestBody CommandSender commandSender) {
+
+      //  return rabbitTemplate.convertSendAndReceive("webServerCommandQueueProjects", commandSender);
+return null;
+
+    }
+
+    @PostMapping("/reports")
+    public Object ReceivedCommandreports( @RequestBody CommandSender commandSender) {
+
+        return rabbitTemplate.convertSendAndReceive("commandQueueReports", commandSender);
 
 
     }
@@ -69,9 +92,9 @@ public class AuthenticationController {
 
 
     @PostMapping("/payment")
-    public Object ReceivedCommand2( @RequestBody CommandSender commandSender) {
+    public Object ReceivedCommandfinance( @RequestBody CommandSender commandSender) {
 
-        return rabbitTemplate.convertSendAndReceive("commandQueueUser", commandSender);
+        return rabbitTemplate.convertSendAndReceive("WebServerQueueFinance", commandSender);
 
     }
 

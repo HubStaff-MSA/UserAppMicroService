@@ -48,8 +48,8 @@ public class RabbitMQListenerConsumer {
     }
 
 
-/////////////////////////////////////////////////
-    @RabbitListener(queues = "webserverQueue")
+///////////////////////////////////////////////
+    @RabbitListener(queues = "WebServerUserQueue")
     public Object receiveMessagefromwebserver(CommandSender commandSender) throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
         System.out.println("Received command: " + commandSender.getCommand());
         System.out.println("Received payload: " + commandSender.getPayload());
@@ -60,8 +60,8 @@ public class RabbitMQListenerConsumer {
         // Cast the returned value to TrackTime
         if (returnedValue != null) {
 
-            rabbitTemplate.convertAndSend(commandSender.getRequestingQueue(), returnedValue);
-            System.out.println("Published returned value to "+ commandSender.getRequestingQueue()+" queue.");
+            //rabbitTemplate.convertAndSend(commandSender.getRequestingQueue(), returnedValue);
+           // System.out.println("Published returned value to "+ commandSender.getRequestingQueue()+" queue.");
         }
          return returnedValue;
     }
